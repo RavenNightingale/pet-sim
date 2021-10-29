@@ -17,11 +17,11 @@ shop = function(shop_input)
 	end if
 	
 	if shop_input == "buy cat food" then
-		birdF.stock = catF.stock +10
+		catF.stock = catF.stock +10
 	end if
 	
 	if shop_input == "buy dog food" then
-		catF.stock = dogF.stock +10
+		dogF.stock = dogF.stock +10
 	end if
 end function
 //==================== makes buy/sell possible
