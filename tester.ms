@@ -1,5 +1,5 @@
 //====================
-globals.funds = 1500
+funds = 5000
 //==================== funds
 env.importPaths.push "/usr/recourses/shop"
 
@@ -41,7 +41,7 @@ wallet = function(wallet_input)
 	end if
 end function
 //==================== wallet prints your current funds
-globals.is_first_pet = true
+is_first_pet = true
 //==================== first time pet owner set true
 kennel = function(kennel_input)
 	if kennel_input == "prices" then
@@ -58,54 +58,73 @@ kennel = function(kennel_input)
 		print "$" + dog.price	
 	end if
 	
-	if kennel_input == "buy bird" and globals.funds <= bird.price then
-		print "Not engough funds"
-	else
-		if globals.funds >= bird.price then
-			globals.funds = globals.funds - bird.price
+	if kennel_input == "buy bird" then
+		if globals.funds <= bird.price then
+			print "not enough funds"
+		else
+			if globals.funds == bird.price or globals.funds >= bird.price then
+				globals.funds = globals.funds -bird.price
+				bird.purchased = true
+			end if
 		end if
 	end if
 	
-	if kennel_input == "buy dog" and globals.funds <= dog.price then
-		print "Not engough funds"
-	else
-		if globals.is_first_pet == true then
-			print "congratulations on your first pet!"
-			globals.is_first_pet = false
-		end if
-		
-		if globals.funds >= dog.price then
-			globals.funds = globals.funds - dog.price
+	if kennel_input == "buy dog" then
+		if globals.funds <= dog.price then
+			print "not enough funds"
+		else
+			if globals.funds == dog.price or globals.funds >= dog.price then
+				globals.funds = globals.funds -dog.price
+				dog.purchased = true
+				if globals.is_first_pet == true then
+					print"congratulations on buying your first pet!"
+				end if
+			end if
 		end if
 	end if
 	
-	if kennel_input == "buy cat" and globals.funds <= cat.price then
-		print "Not engough funds"
-	else
-		if globals.is_first_pet == true then
-			print "congratulations on your first pet!"
-			globals.is_first_pet = false
+	if kennel_input == "buy cat" then
+		if globals.funds <= cat.price then
+			print "not enough funds"
+		else
+			if globals.funds == cat.price or globals.funds >= cat.price then
+				globals.funds = globals.funds -cat.price
+				cat.purchased = true
+				if globals.is_first_pet == true then
+					print"congratulations on buying your first pet!"
+				end if
+			end if
 		end if
-		
-		if globals.funds >= cat.price then
-			globals.funds = globals.funds - cat.price
-		end if
-	end if	
+	end if
 end function
 //==================== kennel compares price over funds and checks first time pet owner
 while true
+	print "use 'help' for help."
 	inp = input("select: ")
 	
+	if inp == "help" then
+		print "use 'status' to check pet status"
+		print "use 'kennel' to go to the pet store"
+		print "use 'shop' to go to the store"
+		print "use 'wallet' to open your wallet"
+		print "use 'inventory' to open your inventory"
+		print "use 'pet' then 'animal' to interact with your pet"
+	end if
+	
 	if inp == "status" then
-		animal_status()
+		cat.status()
+		bird.status()
+		dog.status()
 	end if
 	
 	if inp == "kennel" then
+		print "use 'buy' then 'animal' to purchase a pet"
 		kennel_input = input("kennel: ")
 		kennel(kennel_input)
 	end if
 	
 	if inp == "wallet" then
+		print "use 'funds' to check your cash"
 		wallet_input = input("wallet: ")
 		wallet(wallet_input)
 	end if
@@ -117,6 +136,15 @@ while true
 	
 	if inp == "inventory" then
 		print "you have " + birdF.stock + " bird food"
+	end if
+	
+	if inp == "pet bird" then
+		if bird.purchased == false then
+			print "you dont own a bird to pet"
+		else
+			print bird.name + " is slightly happier"
+			bird.petting()
+		end if
 	end if
 end while
 //==================== main user interface
